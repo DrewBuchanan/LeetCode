@@ -2,8 +2,13 @@
 SELECT  x,
         y,
         z,
-        CASE
-            WHEN x + y > z AND x + z > y AND y + z > x THEN 'Yes'
-            ELSE 'No'
-        END as triangle
-FROM triangle;
+        'Yes' as triangle
+FROM triangle
+WHERE x + y > z AND x + z > y AND y + z > x
+UNION
+SELECT  x,
+        y,
+        z,
+        'No' as triangle
+FROM triangle
+WHERE NOT (x + y > z AND x + z > y AND y + z > x);
