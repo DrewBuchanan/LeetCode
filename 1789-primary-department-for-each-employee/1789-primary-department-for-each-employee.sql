@@ -1,4 +1,11 @@
 /* Write your T-SQL query statement below */
-SELECT e1.employee_id, e1.department_id
-FROM Employee e1
-WHERE e1.primary_flag = 'Y' OR 1 = (SELECT COUNT(*) FROM Employee e2 WHERE e2.employee_id = e1.employee_id);
+WITH cte AS
+(
+    SELECT employee_id, COUNT(*) as 'dept_count'
+    FROM Employee
+    GROUP BY employee_id
+)
+SELECT e.employee_id, e.department_id
+FROM cte c
+    INNER JOIN Employee e ON c.employee_id = e.employee_id
+WHERE e.primary_flag = 'Y' OR c.dept_count = 1;
